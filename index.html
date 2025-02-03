@@ -1,98 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rust+ Web Installer</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .container {
-      text-align: center;
-      background-color: #333;
-      padding: 40px;
-      border-radius: 15px;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
-      max-width: 500px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .title {
-      font-size: 48px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: #ffffff;
-    }
-
-    .install-label {
-      font-size: 24px;
-      font-weight: 500;
-      margin-bottom: 20px;
-      color: white;
-    }
-
-    esp-web-install-button {
-      --esp-tools-button-color: #e74c3c;
-      --esp-tools-button-text-color: white;
-      --esp-tools-button-border-radius: 5px;
-      --esp-tools-button-font-size: 50px;
-      --esp-tools-button-padding: 25px 50px;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 1;
-      cursor: pointer;
-      text-transform: uppercase;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    esp-web-install-button:hover {
-      --esp-tools-button-color: #c0392b;
-    }
-
-    esp-web-install-button:active {
-      --esp-tools-button-color: #e74c3c;
-    }
-
-    esp-web-install-button span {
-      display: block;
-      font-size: 24px;
-      color: #f1c40f;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
+    <title>ESP32 Web Flasher</title>
+    <script type="module" src="https://unpkg.com/esp-web-tools@8.0.3/dist/web/install-button.js"></script>
 </head>
 <body>
-
-  <div class="container">
-    <div class="title">Rust+ Screen</div>
-    <div class="install-label">Installer</div>
-    <!-- ESP Web Tools Button with Custom Messages -->
-    <esp-web-install-button
-      manifest="https://fakemayham084.github.io/web-flasher/manifest.json"
-    >
-      <span slot="unsupported">Ah snap, your browser doesn't work!</span>
-      <span slot="not-allowed">Ah snap, you are not allowed to use this on HTTP!</span>
+    <h1>ESP32 Web Flasher</h1>
+    <p>Connect your ESP32 and click the button to flash.</p>
+    
+    <esp-web-install-button manifest="https://fakemayham084.github.io/web-flasher/firmware.json">
+        <button slot="activate">Flash ESP32</button>
     </esp-web-install-button>
-  </div>
-
-  <script
-    type="module"
-    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
-  ></script>
-
 </body>
 </html>
