@@ -1,64 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESP32 Firmware Flasher</title>
-    <script type="module">
-        import * as esptool from 'https://unpkg.com/esptool-js@0.5.4/bundle.js';
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Install Button</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+    }
 
-        window.addEventListener('load', function() {
-            document.getElementById('uploadForm').addEventListener('submit', async function(event) {
-                event.preventDefault();
-                const fileInput = document.getElementById('firmware');
-                const file = fileInput.files[0];
+    .container {
+      text-align: center;
+      background-color: #333;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+      max-width: 500px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-                if (!file) {
-                    alert('Please select a file');
-                    return;
-                }
+    .title {
+      font-size: 48px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #ffffff;
+    }
 
-                document.getElementById('status').innerText = "Preparing to flash...";
+    .install-label {
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: white;
+    }
 
-                try {
-                    // Step 1: Request device via WebUSB
-                    const device = await navigator.usb.requestDevice({
-                        filters: [{ vendorId: 0x10C4 }]  // Filter for ESP32's vendor ID
-                    });
+    esp-web-install-button {
+      --esp-tools-button-color: #e74c3c;
+      --esp-tools-button-text-color: white;
+      --esp-tools-button-border-radius: 5px;
+      --esp-tools-button-font-size: 50px;
+      --esp-tools-button-padding: 25px 50px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 1;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-                    // Step 2: Open connection to device
-                    await device.open();  // Open the device
-                    await device.selectConfiguration(1);  // Select configuration
-                    await device.claimInterface(0);  // Claim interface
+    esp-web-install-button:hover {
+      --esp-tools-button-color: #c0392b;
+    }
 
-                    // Step 3: Read firmware binary data
-                    const firmwareData = await file.arrayBuffer();
+    esp-web-install-button:active {
+      --esp-tools-button-color: #e74c3c;
+    }
 
-                    // Step 4: Flash firmware using esptool-js
-                    const flashData = new Uint8Array(firmwareData);
-                    const esptoolInstance = new esptool.ESPTool(device);
-
-                    await esptoolInstance.flashData(flashData);  // Flash data to ESP32
-
-                    document.getElementById('status').innerText = "Firmware flashed successfully!";
-                } catch (error) {
-                    console.error(error);
-                    document.getElementById('status').innerText = `Error: ${error.message}`;
-                }
-            });
-        });
-    </script>
+    esp-web-install-button span {
+      display: block;
+      font-size: 24px;
+      color: #f1c40f;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <h2>ESP32 Firmware Flasher</h2>
 
-    <form id="uploadForm">
-        <label for="firmware">Select Firmware File (.bin):</label>
-        <input type="file" id="firmware" accept=".bin" required>
-        <br><br>
-        <button type="submit">Upload and Flash</button>
-    </form>
+  <div class="container">
+    <div class="title">Rust+ Screen</div>
+    <div class="install-label">Installer</div>
+    <!-- ESP Web Tools Button with Custom Messages -->
+    <esp-web-install-button
+      manifest="https://fakemayham084.github.io/web-flasher/manifest.json"
+    >
+      <span slot="unsupported">Ah snap, your browser doesn't work!</span>
+      <span slot="not-allowed">Ah snap, you are not allowed to use this on HTTP!</span>
+    </esp-web-install-button>
+  </div>
 
-    <div id="status"></div>
+  <script
+    type="module"
+    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
+  ></script>
+
 </body>
 </html>
