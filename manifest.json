@@ -1,6 +1,6 @@
 {
-  "name": "Rust Screen",
-  "version": "1.0.1",
+  "name": "RustScreen",
+  "version": "1.0.2",
   "builds": [
     {
       "chipFamily": "ESP32",
