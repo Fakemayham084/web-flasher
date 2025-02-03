@@ -1,0 +1,15 @@
+{
+    "name": "Rust+ Screen Firmware",
+    "version": "1.0",
+    "builds": [
+        {
+            "chipFamily": "ESP32",
+            "parts": [
+                {
+                    "path": "https://fakemayham084.github.io/web-flasher/firmware.bin",
+                    "offset": 0
+                }
+            ]
+        }
+    ]
+}
