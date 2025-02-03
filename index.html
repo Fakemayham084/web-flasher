@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Firmware Flasher</title>
+    <script type="module">
+        import * as esptool from 'https://unpkg.com/esptool-js@0.5.4/bundle.js';
+
+        window.addEventListener('load', function() {
+            document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const fileInput = document.getElementById('firmware');
+                const file = fileInput.files[0];
+
+                if (!file) {
+                    alert('Please select a file');
+                    return;
+                }
+
+                document.getElementById('status').innerText = "Preparing to flash...";
+
+                try {
+                    // Step 1: Request device via WebUSB
+                    const device = await navigator.usb.requestDevice({
+                        filters: [{ vendorId: 0x10C4 }]  // Filter for ESP32's vendor ID
+                    });
+
+                    // Step 2: Open connection to device
+                    await device.open();  // Open the device
+                    await device.selectConfiguration(1);  // Select configuration
+                    await device.claimInterface(0);  // Claim interface
+
+                    // Step 3: Read firmware binary data
+                    const firmwareData = await file.arrayBuffer();
+
+                    // Step 4: Flash firmware using esptool-js
+                    const flashData = new Uint8Array(firmwareData);
+                    const esptoolInstance = new esptool.ESPTool(device);
+
+                    await esptoolInstance.flashData(flashData);  // Flash data to ESP32
+
+                    document.getElementById('status').innerText = "Firmware flashed successfully!";
+                } catch (error) {
+                    console.error(error);
+                    document.getElementById('status').innerText = `Error: ${error.message}`;
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>ESP32 Firmware Flasher</h2>
+
+    <form id="uploadForm">
+        <label for="firmware">Select Firmware File (.bin):</label>
+        <input type="file" id="firmware" accept=".bin" required>
+        <br><br>
+        <button type="submit">Upload and Flash</button>
+    </form>
+
+    <div id="status"></div>
+</body>
+</html>
